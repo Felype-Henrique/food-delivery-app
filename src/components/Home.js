@@ -1,17 +1,177 @@
-import React from 'react'
-import { View, Text, ScrollView, StatusBar, Image, TouchableOpacity, TextInput} from 'react-native'
-import { COLOURS } from '../database/items'
+import React, {useState} from 'react'
+import { View, Text, ScrollView, StatusBar, Image, TouchableOpacity, TextInput, FlatList} from 'react-native'
+import { COLOURS, Categories } from '../database/items'
 import Material from 'react-native-vector-icons/MaterialIcons'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import FontAwesome from 'react-native-vector-icons/FontAwesome5'
+import Entypo from 'react-native-vector-icons/Entypo'
+import AntDesign from 'react-native-vector-icons/AntDesign'
 
 const Home = () => {
+
+    const [currentSelected, setCurrentSelected] = useState([0])
+
+    const renderCategories = ({item, index}) => {
+        return (
+            <TouchableOpacity activeOpacity={0.9} onPress={()=> setCurrentSelected(index)}>
+                <View style={{
+                    width: 120,
+                    height: 180,
+                    justifyContent:'space-evenly',
+                    alignItems:'center',
+                    backgroundColor:currentSelected == index ? COLOURS.accent : COLOURS.white,
+                    borderRadius: 20,
+                    margin: 10,
+                    elevation: 5,
+                }}>
+                    <View style={{width: 60, height: 60}}>
+                        <Image source={item.image} style={{
+                            width:'100%',
+                            height:'100%',
+                            resizeMode:'center',
+                        }}/>
+                    </View>
+                    <Text style={{
+                        fontSize:16,
+                        color:COLOURS.black,
+                        fontWeight:'600',
+                    }}>{item.name}</Text>
+                    <View style={{
+                        width: 30,
+                        height: 30,
+                        borderRadius: 100,
+                        backgroundColor: currentSelected == index ? COLOURS.white : COLOURS.accentRed,
+                        justifyContent:'center',
+                        alignItems:'center'
+                    }} >
+                        <FontAwesome name="angle-right" style={{
+                          fontSize:12,
+                          color: currentSelected == index ? COLOURS.black : COLOURS.white,
+                        }} />
+                    </View>
+                </View>
+            </TouchableOpacity>
+        )
+    }
+
+    const renderItems = (data, index) => {
+        return (
+            <TouchableOpacity
+            key={index}
+            activeOpacity={0.9}
+            style={{
+                width:'100%',
+                height: 180,
+                justifyContent:'center',
+                alignItems:'center',
+
+            }}>
+                <View style={{
+                    width: '90%',
+                    height: 160,
+                    backgroundColor:COLOURS.white,
+                    borderRadius: 20,
+                    elevation: 4,
+                    position: 'relative',
+                    padding: 15,
+                    flexDirection:'row',
+                    justifyContent:'space-between',
+                    alignItems:'center',
+                }}>
+                    <View style={{marginBottom: 50}}>
+                        <View style={{
+                            flexDirection: 'row',
+                            alignItems: 'center',
+                            display: data.isTopOfTheWeek ? 'flex' : 'none',
+                        }}>
+                            <FontAwesome name="crown" style={{
+                                fontSize: 10,
+                                color: COLOURS.accent,
+                            }}/>
+                            <Text style={{
+                                fontSize:12,
+                                color: COLOURS.black,
+                                opacity: 0.8,
+                                marginLeft: 5,
+                            }}>
+                                Melhores da semana
+                            </Text>
+                        </View>
+                        <Text style={{
+                            fontSize:22,
+                            color: COLOURS.black,
+                            fontWeight: 'bold',
+                            padding: 10,
+                        }}>{data.name}</Text>
+                        <Text style={{
+                            fontSize: 12,
+                            color: COLOURS.black,
+                            opacity: 0.5,
+                        }}>{data.weight}</Text>
+                    </View>
+                    <View style={{
+                        width: 150,
+                        height: 150,
+                        marginRight: -45,
+                    }}>
+                        <Image source={data.image} style={{
+                            width: '100%',
+                            height: '100%',
+                            resizeMode: 'contain',
+                        }}/>
+                    </View>
+                    <View style={{
+                        position: 'absolute',
+                        bottom: 0,
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        }}>
+                    <View style={{
+                        width: 85,
+                        height: 50,
+                        backgroundColor: COLOURS.accent,
+                        borderTopRightRadius: 20,
+                        borderBottomLeftRadius: 20,
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}>
+                        <Entypo
+                            name='plus'
+                            style={{
+                                fontSize: 18,
+                                color: COLOURS.black
+                            }}
+                        />
+                    </View>
+                    <View style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginLeft: 20,
+                    }}>
+                        <AntDesign name='star' style={{
+                            fontSize: 12,
+                            color: COLOURS.black,
+                            paddingRight: 5
+                        }}/>
+                        <Text style={{
+                            fontSize: 15,
+                            color: COLOURS.black,
+                            fontWeight: 'bold',
+                        }}>{data.rating}</Text>
+                    </View>
+                </View>
+                </View>
+            </TouchableOpacity>
+        )
+    }
+
     return(
         <View style={{
             width: '100%',
             height: '100%',
             backgroundColor: COLOURS.white,
         }}>
-            <ScrollView>
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <View style={{
                     width: '100%',
                     height: '100%',
@@ -90,6 +250,34 @@ const Home = () => {
                     color: COLOURS.black,
                     letterSpacing: 1,
                 }}>Categorias</Text>
+                <FlatList
+                    horizontal={true}
+                    data={Categories}
+                    renderItem={renderCategories}
+                    showsHorizontalScrollIndicator={false}
+                    keyExtractor={(item, index) => index.toString()}
+                />
+                <Text style={{
+                    paddingTop:20,
+                    paddingHorizontal:20,
+                    fontSize:18,
+                    fontWeight: '700',
+                    color: COLOURS.black,
+                }}>Popular</Text>
+                {Categories[currentSelected].items.map(renderItems)}
+                <TouchableOpacity style={{
+                    margin: 30,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    opacity: 0.5,
+                }}>
+                    <Text style={{
+                        fontSize: 16,
+                        color: COLOURS.black,
+                        borderBottomWidth: 1,
+                        borderBottomColor: COLOURS.black,
+                    }}>Saiba mais</Text>
+                </TouchableOpacity>
                 </View>
             </ScrollView>
         </View>
