@@ -7,7 +7,7 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome5'
 import Entypo from 'react-native-vector-icons/Entypo'
 import AntDesign from 'react-native-vector-icons/AntDesign'
 
-const Home = () => {
+const Home = ({navigation}) => {
 
     const [currentSelected, setCurrentSelected] = useState([0])
 
@@ -64,8 +64,17 @@ const Home = () => {
                 height: 180,
                 justifyContent:'center',
                 alignItems:'center',
-
-            }}>
+            }}
+            onPress={()=> navigation.push('details', {
+                name: data.name,
+                price: data.price,
+                image: data.image,
+                size: data.size,
+                delivery: data.delivery,
+                ingredients: data.ingredients,
+                isTopOfTheWeek: data.isTopOfTheWeek,
+                navigation: navigation,
+            })}>
                 <View style={{
                     width: '90%',
                     height: 160,

@@ -3,8 +3,8 @@ export const COLOURS = {
     black:'#000000',
     lightGray:'#B3B4B6',
     accent:'#FFC231',
-    accentRed:'FB5D25',
-    accentPink:'F96165'
+    accentRed:'#FB5D25',
+    accentPink:'#F96165'
 }
 
 export const Categories = [
@@ -20,7 +20,7 @@ export const Categories = [
                 isTopOfTheWeek: true,
                 image: require('../database/images/burger/classicburger.png'),
                 size:'Grande',
-                delivey: 25,
+                delivery: 25,
                 ingredients: [
                     require('../database/images/flour.png'),
                     require('../database/images/cheese.png'),
@@ -36,7 +36,7 @@ export const Categories = [
                 isTopOfTheWeek: false,
                 image: require('../database/images/burger/alootikkiburger.png'),
                 size:'Médio',
-                delivey: 20,
+                delivery: 20,
                 ingredients: [
                     require('../database/images/Sliced-Onion.png'),
                     require('../database/images/Tomato.png'),
@@ -52,7 +52,7 @@ export const Categories = [
                 isTopOfTheWeek: false,
                 image: require('../database/images/burger/biggiecheese.png'),
                 size:'Pequeno',
-                delivey: 35,
+                delivery: 35,
                 ingredients: [
                     require('../database/images/Tomato.png'),
                     require('../database/images/cheese.png'),
